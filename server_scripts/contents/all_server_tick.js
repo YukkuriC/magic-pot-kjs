@@ -13,8 +13,18 @@ let potTickFuncs = {
                 let bbb = state.block
                 if (bbb.performBonemeal) {
                     bbb.performBonemeal(level, level.random, ptr, state)
+                    level.levelEvent(1505, ptr, 0)
                 }
             }
+        }
+    },
+    potted_cherry_sapling: (level, pos) => {
+        let { x, y, z } = pos
+        let range = AABB.of(x - 3, y, z - 3, x + 3, y, z + 3)
+        for (let e of level.getEntitiesWithin(range)) {
+            if (!e.setInLove) continue
+            e.setInLove(null)
+            e.setAge(0)
         }
     },
 }
@@ -22,4 +32,5 @@ let potTickFuncs = {
 /**@type {Record<string,number>}*/
 let potTickCooldowns = {
     potted_oak_sapling: 10,
+    potted_cherry_sapling: 100,
 }
