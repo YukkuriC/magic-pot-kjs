@@ -1,6 +1,7 @@
 /**
  * @param {Internal.MinecraftServer} server
  * @param {Internal.ServerLevel} level
+ * @return {Internal.CompoundTag}
  */
 function getTickRecorder(server, level) {
     let storage = server.persistentData

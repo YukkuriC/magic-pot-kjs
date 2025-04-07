@@ -10,10 +10,11 @@ LevelEvents.tick(event => {
             pool[posRaw] = tick
             continue
         }
+        let block, pos
         try {
             let posSep = posRaw.split(',').map(Number)
-            let pos = BlockPos(posSep[0], posSep[1], posSep[2])
-            let block = level.getBlock(pos)
+            pos = BlockPos(posSep[0], posSep[1], posSep[2])
+            block = level.getBlock(pos)
             let bid = cutNamespace(block.id)
             let func = potTickFuncs[bid]
             if (!func) {
@@ -23,10 +24,14 @@ LevelEvents.tick(event => {
             func(level, pos)
             if (bid in potTickCooldowns) pool[posRaw] = potTickCooldowns[bid]
         } catch (e) {
+            if (block && pos) {
+                let blockName = PotUtils.getBlockName(block.id)
+                let key = PotUtils.getPosKey(pos)
+                server.tell(Text.translate('pot.block.error', blockName, key).red())
+            }
             server.tell(e)
             invalidPos.push(posRaw)
         }
     }
     for (let invalid of invalidPos) delete pool[invalid]
 })
-

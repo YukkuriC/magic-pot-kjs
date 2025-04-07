@@ -1,0 +1,5 @@
+{
+    "pot.block.enabled": "Enabled %s at (%s)",
+    "pot.block.disabled": "Disabled %s at (%s)",
+    "pot.block.error": "%s at (%s) threw an exception, set disabled"
+}
