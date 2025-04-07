@@ -25,9 +25,7 @@ LevelEvents.tick(event => {
             if (bid in potTickCooldowns) pool[posRaw] = potTickCooldowns[bid]
         } catch (e) {
             if (block && pos) {
-                let blockName = PotUtils.getBlockName(block.id)
-                let key = PotUtils.getPosKey(pos)
-                server.tell(Text.translate('pot.block.error', blockName, key).red())
+                server.tell(PotUtils.getSimpleBlockMsg('error', block.id, pos).red())
             }
             server.tell(e)
             invalidPos.push(posRaw)

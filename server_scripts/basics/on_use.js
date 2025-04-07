@@ -13,14 +13,13 @@ BlockEvents.rightClicked(e => {
             potUseFuncs[id](level, pos)
         } else if (id in potTickFuncs) {
             let pool = getTickRecorder(server, level)
-            let key = `${pos.x},${pos.y},${pos.z}`
-            let blockName = Text.translate(`block.${idFull.replace(':', '.')}`)
+            let key = PotUtils.getPosKey(pos)
             if (pool.contains(key)) {
                 delete pool[key]
-                player.tell(Text.translate('pot.block.disabled', blockName, key).gold())
+                player.tell(PotUtils.getSimpleBlockMsg('disabled', idFull, pos).gold())
             } else {
                 pool[key] = 0
-                player.tell(Text.translate('pot.block.enabled', blockName, key).green())
+                player.tell(PotUtils.getSimpleBlockMsg('enabled', idFull, pos).green())
             }
         }
     })
