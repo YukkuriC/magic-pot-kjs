@@ -2,11 +2,12 @@
 let potTickFuncs = {
     potted_oak_sapling: (level, pos) => {
         let ptr = pos.mutable()
-        level.dimension
         let { x: ix, z: iz } = pos
+        let tc = level.server.tickCount
         for (let x = ix - 4; x <= ix + 4; x++) {
             ptr.setX(x)
             for (let z = iz - 4; z <= iz + 4; z++) {
+                if ((x + z * 2 + tc) % 5) continue
                 ptr.setZ(z)
                 let block = level.getBlock(ptr)
                 let state = block.blockState
@@ -31,6 +32,6 @@ let potTickFuncs = {
 
 /**@type {Record<string,number>}*/
 let potTickCooldowns = {
-    potted_oak_sapling: 10,
+    potted_oak_sapling: 30,
     potted_cherry_sapling: 100,
 }
