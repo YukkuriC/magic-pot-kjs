@@ -21,11 +21,15 @@ let potTickFuncs = {
     },
     potted_cherry_sapling: (level, pos) => {
         let { x, y, z } = pos
-        let range = AABB.of(x - 3, y, z - 3, x + 3, y, z + 3)
+        let range = AABB.of(x - 4, y - 1, z - 4, x + 4, y + 1, z + 4)
         for (let e of level.getEntitiesWithin(range)) {
             if (!e.setInLove) continue
-            e.setInLove(null)
-            e.setAge(0)
+            if (!e.isBaby()) {
+                e.setAge(0)
+                e.setInLove(null)
+            } else {
+                e.addMotion(Math.random() - 0.5, 0.5, Math.random() - 0.5)
+            }
         }
     },
 }
