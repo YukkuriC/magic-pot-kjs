@@ -3,7 +3,7 @@ let potTickFuncs = {
     potted_oak_sapling: (level, pos) => {
         let ptr = pos.mutable()
         let { x: ix, z: iz } = pos
-        let tc = level.server.tickCount
+        let tc = Math.floor(level.server.tickCount / 10)
         for (let x = ix - 4; x <= ix + 4; x++) {
             ptr.setX(x)
             for (let z = iz - 4; z <= iz + 4; z++) {

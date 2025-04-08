@@ -23,7 +23,7 @@ LevelEvents.tick(event => {
                 continue
             }
             func(level, pos, getCacheFromMap(cache, posRaw))
-            if (bid in potTickCooldowns) pool[posRaw] = potTickCooldowns[bid]
+            if (bid in potTickCooldowns) pool[posRaw] = potTickCooldowns[bid] - 1
         } catch (e) {
             if (block && pos) {
                 server.tell(PotUtils.getSimpleBlockMsg('error', block.id, pos).red())
