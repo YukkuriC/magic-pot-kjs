@@ -12,8 +12,9 @@ BlockEvents.rightClicked(e => {
         if (id in potUseFuncs) {
             try {
                 potUseFuncs[id](level, pos, player)
+                player.tell(PotUtils.getSimpleBlockMsg('activated', idFull, pos).green())
             } catch (e) {
-                server.tell(PotUtils.getSimpleBlockMsg('error', block.id, pos).red())
+                server.tell(PotUtils.getSimpleBlockMsg('error', idFull, pos).red())
                 player.tell(e)
             }
         } else if (id in potTickFuncs) {
