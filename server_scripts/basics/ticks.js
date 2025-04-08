@@ -1,6 +1,7 @@
 LevelEvents.tick(event => {
     let { level, server } = event
     let pool = getTickRecorder(server, level)
+    let cache = getCacheRecorder(server, level)
     let poolPairs = Object.entries(pool)
     if (poolPairs.length <= 0) return
     let invalidPos = []
@@ -21,7 +22,7 @@ LevelEvents.tick(event => {
                 invalidPos.push(posRaw)
                 continue
             }
-            func(level, pos)
+            func(level, pos, getCacheFromMap(cache, posRaw))
             if (bid in potTickCooldowns) pool[posRaw] = potTickCooldowns[bid]
         } catch (e) {
             if (block && pos) {
@@ -31,5 +32,8 @@ LevelEvents.tick(event => {
             invalidPos.push(posRaw)
         }
     }
-    for (let invalid of invalidPos) delete pool[invalid]
+    for (let invalid of invalidPos) {
+        delete pool[invalid]
+        delete cache[invalid]
+    }
 })

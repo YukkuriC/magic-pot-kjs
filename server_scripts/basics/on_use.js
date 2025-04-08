@@ -10,7 +10,12 @@ BlockEvents.rightClicked(e => {
         let idFull = level.getBlock(pos).id
         let id = cutNamespace(idFull)
         if (id in potUseFuncs) {
-            potUseFuncs[id](level, pos)
+            try {
+                potUseFuncs[id](level, pos, player)
+            } catch (e) {
+                server.tell(PotUtils.getSimpleBlockMsg('error', block.id, pos).red())
+                player.tell(e)
+            }
         } else if (id in potTickFuncs) {
             let pool = getTickRecorder(server, level)
             let key = PotUtils.getPosKey(pos)
@@ -18,7 +23,7 @@ BlockEvents.rightClicked(e => {
                 delete pool[key]
                 player.tell(PotUtils.getSimpleBlockMsg('disabled', idFull, pos).gold())
             } else {
-                pool[key] = 0
+                pool[key] = potTickCooldowns[id] || 0
                 player.tell(PotUtils.getSimpleBlockMsg('enabled', idFull, pos).green())
             }
         }

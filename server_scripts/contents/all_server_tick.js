@@ -1,4 +1,4 @@
-/**@type {Record<string,(lvl:Internal.ServerLevel,pos:BlockPos)=>void>}*/
+/**@type {Record<string,(lvl:Internal.ServerLevel,pos:BlockPos,data:Internal.CompoundTag)=>void>}*/
 let potTickFuncs = {
     potted_oak_sapling: (level, pos) => {
         let ptr = pos.mutable()
