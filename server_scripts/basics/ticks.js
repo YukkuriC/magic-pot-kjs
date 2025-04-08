@@ -25,10 +25,12 @@ LevelEvents.tick(event => {
             func(level, pos, getCacheFromMap(cache, posRaw))
             if (bid in potTickCooldowns) pool[posRaw] = potTickCooldowns[bid] - 1
         } catch (e) {
-            if (block && pos) {
-                server.tell(PotUtils.getSimpleBlockMsg('error', block.id, pos).red())
+            if (e != 'stop') {
+                if (block && pos) {
+                    server.tell(PotUtils.getSimpleBlockMsg('error', block.id, pos).red())
+                }
+                server.tell(e)
             }
-            server.tell(e)
             invalidPos.push(posRaw)
         }
     }
