@@ -11,6 +11,7 @@
 自动采矿|矿业|持续|`brown_mushroom`
 区块毁灭者 & 收集掉落物|矿业|持续|`warped_fungus`
 生命恢复buff|战斗|单次|`poppy`
+手动怪物清场|战斗|单次|`dandelion`
 
 ## 技术目标
 总目标：探索该路线的边界
