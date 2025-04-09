@@ -66,13 +66,33 @@ let potTickFuncs = {
                         e.discard()
                         break
                     case 'minecraft:item':
-                        e.teleportTo(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
+                        e.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
                         e.setMotion(0, Math.random() * 0.3 + 0.2, 0)
                         break
                 }
             }
             data.h = h - 1
         } else throw 'stop'
+    },
+    potted_brown_mushroom(level, pos, data) {
+        let h = data.h,
+            ptr = pos.mutable()
+        if (h === undefined || !level.isInWorldBounds(ptr.setY(h))) {
+            h = pos.y - 1
+            ptr.setY(h)
+        }
+        PotUtils.iterChunk(ptr, () => {
+            let target = level.getBlock(ptr)
+            if (!target.hasTag('forge:ores') && Math.random() > 0.01) return
+            for (let drop of target.getDrops()) {
+                let item = level.createEntity('item')
+                item.item = drop
+                item.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
+                item.setMotion(0, Math.random() * 0.3 + 0.2, 0)
+                item.spawn()
+            }
+        })
+        data.h = h - 1
     },
 }
 
@@ -81,4 +101,5 @@ let potTickCooldowns = {
     potted_oak_sapling: 30,
     potted_cherry_sapling: 100,
     potted_warped_fungus: 10,
+    potted_brown_mushroom: 10,
 }
