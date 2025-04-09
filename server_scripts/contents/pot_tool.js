@@ -5,17 +5,20 @@ ItemEvents.firstLeftClicked('flower_pot', ev => {
         level,
     } = ev
     if (!player.shiftKeyDown) return
+
+    const CHAIN_LIMIT = 64
     try {
         // chain miner
         if (block) {
             let isSurvival = !player.isCreative(),
+                source = block.pos,
                 checker = block.blockState.block
             if (checker.defaultDestroyTime() < 0 && isSurvival) return
             let visited = {},
-                selected = [block.pos],
-                queue = Array.from(selected)
-            visited[PotUtils.getPosKey(selected[0])] = 1
-            while (selected.length < 32 && queue.length > 0) {
+                selected = [source],
+                queue = [source]
+            visited[PotUtils.getPosKey(source)] = 1
+            while (selected.length < CHAIN_LIMIT && queue.length > 0) {
                 let oldPos = queue.shift()
                 for (let dx = -1; dx <= 1; dx++)
                     for (let dy = -1; dy <= 1; dy++)
@@ -33,11 +36,22 @@ ItemEvents.firstLeftClicked('flower_pot', ev => {
                             queue.push(newPos)
                         }
             }
-            if (selected.length < 32) {
-                for (let p of selected) level.destroyBlock(p, isSurvival)
-            } else {
-                // todo tunneler
+            // fallback hammer
+            if (selected.length >= CHAIN_LIMIT) {
+                selected.length = 0
+                for (let dx = -1; dx <= 1; dx++) {
+                    if (dx * facing.x) continue
+                    for (let dy = -1; dy <= 1; dy++) {
+                        if (dy * facing.y) continue
+                        for (let dz = -1; dz <= 1; dz++) {
+                            if (dz * facing.z) continue
+                            selected.push(source.offset(dx, dy, dz))
+                        }
+                    }
+                }
             }
+
+            for (let p of selected) level.destroyBlock(p, isSurvival)
         }
     } catch (e) {
         player.tell(e)
