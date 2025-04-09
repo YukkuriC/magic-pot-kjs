@@ -1,6 +1,6 @@
 /**@type {Record<string,(lvl:Internal.ServerLevel,pos:BlockPos,data:Internal.CompoundTag)=>void>}*/
 let potTickFuncs = {
-    potted_oak_sapling: (level, pos) => {
+    potted_oak_sapling(level, pos) {
         let ptr = pos.mutable()
         let { x: ix, z: iz } = pos
         let tc = Math.floor(level.server.tickCount / 10)
@@ -19,7 +19,7 @@ let potTickFuncs = {
             }
         }
     },
-    potted_cherry_sapling: (level, pos) => {
+    potted_cherry_sapling(level, pos) {
         let { x, y, z } = pos
         let range = AABB.of(x - 4, y - 1, z - 4, x + 4, y + 1, z + 4)
         for (let e of level.getEntitiesWithin(range)) {
@@ -32,7 +32,7 @@ let potTickFuncs = {
             }
         }
     },
-    potted_warped_fungus: (level, pos, data) => {
+    potted_warped_fungus(level, pos, data) {
         let h = data.h
         if (h === undefined) h = pos.y - 1
         level.tell('init:' + data.h)
