@@ -24,6 +24,8 @@ let PotUtils = {
         }
     },
     getChunkHitbox(pos) {
-
+        let cx = Math.floor(pos.x / 16) * 16,
+            cz = Math.floor(pos.z / 16) * 16
+        return AABB.of(cx, pos.y, cz, cx + 16, pos.y + 1, cz + 16)
     },
 }

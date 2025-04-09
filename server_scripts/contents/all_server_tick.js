@@ -60,6 +60,17 @@ let potTickFuncs = {
                 level.destroyBlock(ptr, true)
                 level.setBlockAndUpdate(ptr, Blocks.AIR.defaultBlockState())
             })
+            for (let e of level.getEntitiesWithin(PotUtils.getChunkHitbox(ptr))) {
+                switch (e.type) {
+                    case 'minecraft:experience_orb':
+                        e.discard()
+                        break
+                    case 'minecraft:item':
+                        e.teleportTo(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
+                        e.setMotion(0, Math.random() * 0.3 + 0.2, 0)
+                        break
+                }
+            }
             data.h = h - 1
         } else throw 'stop'
     },
