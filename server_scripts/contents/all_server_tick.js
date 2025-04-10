@@ -16,7 +16,7 @@ let potTickFuncs = {
             }
         }
 
-        let tc = Math.floor(level.server.tickCount / 10)
+        let tc = Math.floor(level.server.tickCount / 30)
         // use cache
         if (tc % 4 && data.cache) {
             let invalid = []
@@ -31,7 +31,6 @@ let potTickFuncs = {
         for (let x = ix - 4; x <= ix + 4; x++) {
             ptr.setX(x)
             for (let z = iz - 4; z <= iz + 4; z++) {
-                if ((x + z + tc) % 2) continue
                 ptr.setZ(z)
                 if (doBonemeal(ptr)) data.cache[PotUtils.getPosKey(ptr)] = true
             }
