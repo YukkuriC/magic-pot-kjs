@@ -1,21 +1,39 @@
 /**@type {Record<string,(lvl:Internal.ServerLevel,pos:BlockPos,data:Internal.CompoundTag)=>void>}*/
 let potTickFuncs = {
-    potted_oak_sapling(level, pos) {
+    potted_oak_sapling(level, pos, data) {
         let ptr = pos.mutable()
         let { x: ix, z: iz } = pos
+
+        function doBonemeal(at) {
+            let block = level.getBlock(at)
+            let state = block.blockState
+            /**@type {Internal.BonemealableBlock}*/
+            let bbb = state.block
+            if (bbb.isValidBonemealTarget && bbb.isValidBonemealTarget(level, pos, state, level.isClientSide())) {
+                bbb.performBonemeal(level, level.random, at, state)
+                level.levelEvent(1505, at, 0)
+                return true
+            }
+        }
+
         let tc = Math.floor(level.server.tickCount / 10)
+        // use cache
+        if (tc % 4 && data.cache) {
+            let invalid = []
+            for (let posRaw of Object.keys(data.cache)) {
+                if (!doBonemeal(posRaw.split(',').map(Number))) invalid.push(posRaw)
+            }
+            for (const i of invalid) delete data.cache[i]
+            return
+        }
+        // refresh cache
+        data.cache = {}
         for (let x = ix - 4; x <= ix + 4; x++) {
             ptr.setX(x)
             for (let z = iz - 4; z <= iz + 4; z++) {
-                if ((x + z * 2 + tc) % 5) continue
+                if ((x + z + tc) % 2) continue
                 ptr.setZ(z)
-                let block = level.getBlock(ptr)
-                let state = block.blockState
-                let bbb = state.block
-                if (bbb.performBonemeal) {
-                    bbb.performBonemeal(level, level.random, ptr, state)
-                    level.levelEvent(1505, ptr, 0)
-                }
+                if (doBonemeal(ptr)) data.cache[PotUtils.getPosKey(ptr)] = true
             }
         }
     },
