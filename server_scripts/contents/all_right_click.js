@@ -3,6 +3,10 @@ let potUseFuncs = {
     potted_poppy(lvl, pos, plr) {
         let potions = plr.potionEffects
         potions.add('minecraft:regeneration', 20 * 1800, 0, false, false)
+        for (let item of plr.inventory.allItems) if (item.damageableItem) item.damageValue = 0
+        plr.abilities.mayfly = true
+        plr.abilities.flyingSpeed = 0.15
+        plr.onUpdateAbilities()
     },
     potted_dandelion(lvl, pos) {
         let range = AABB.of(pos.x - 50, -320, pos.z - 50, pos.x + 51, 320, pos.z + 51)
