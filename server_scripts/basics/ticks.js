@@ -1,5 +1,9 @@
 LevelEvents.tick(event => {
-    let { level, server } = event
+    let {
+        level,
+        server,
+        server: { tickCount },
+    } = event
     let pool = getTickRecorder(server, level)
     let cache = getCacheRecorder(server, level)
     let poolPairs = Object.entries(pool)
@@ -23,7 +27,7 @@ LevelEvents.tick(event => {
                 continue
             }
             func(level, pos, getCacheFromMap(cache, posRaw))
-            if (bid in potTickCooldowns) pool[posRaw] = (level.server.tickCount % (potTickCooldowns[bid] || 1)) + 1
+            if (bid in potTickCooldowns) pool[posRaw] = (tickCount % (potTickCooldowns[bid] || 1)) + 1
         } catch (e) {
             if (e != 'stop') {
                 if (block && pos) {
@@ -34,6 +38,15 @@ LevelEvents.tick(event => {
             invalidPos.push(posRaw)
         }
     }
+
+    // detect memory leak
+    if (tickCount % 600 == 0)
+        for (let key in cache)
+            if (!pool.contains(key)) {
+                invalidPos.push(key)
+                // server.tell('leak: ' + key)
+            }
+
     for (let invalid of invalidPos) {
         delete pool[invalid]
         delete cache[invalid]
