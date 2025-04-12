@@ -73,6 +73,7 @@ let potTickFuncs = {
             }
         }
         if (canDig) {
+            let tryChest = level.getBlock(pos.above())?.inventory
             PotUtils.iterChunk(ptr, () => {
                 level.destroyBlock(ptr, true)
                 level.setBlockAndUpdate(ptr, Blocks.AIR.defaultBlockState())
@@ -83,8 +84,13 @@ let potTickFuncs = {
                         e.discard()
                         break
                     case 'minecraft:item':
-                        e.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
-                        e.setMotion(0, Math.random() * 0.3 + 0.2, 0)
+                        if (tryChest) {
+                            tryChest.insertItem(e.item, false)
+                            e.discard()
+                        } else {
+                            e.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
+                            e.setMotion(0, Math.random() * 0.3 + 0.2, 0)
+                        }
                         break
                 }
             }
@@ -98,15 +104,20 @@ let potTickFuncs = {
             h = pos.y - 1
             ptr.setY(h)
         }
+        let tryChest = level.getBlock(pos.above())?.inventory
         PotUtils.iterChunk(ptr, () => {
             let target = level.getBlock(ptr)
             if (!target.hasTag('forge:ores') && Math.random() > 0.01) return
             for (let drop of target.getDrops()) {
-                let item = level.createEntity('item')
-                item.item = drop
-                item.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
-                item.setMotion(0, Math.random() * 0.3 + 0.2, 0)
-                item.spawn()
+                if (tryChest) {
+                    tryChest.insertItem(drop, false)
+                } else {
+                    let item = level.createEntity('item')
+                    item.item = drop
+                    item.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
+                    item.setMotion(0, Math.random() * 0.3 + 0.2, 0)
+                    item.spawn()
+                }
             }
         })
         data.h = h - 1
