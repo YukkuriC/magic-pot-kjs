@@ -9,7 +9,7 @@ let potTickFuncs = {
             let state = block.blockState
             /**@type {Internal.BonemealableBlock}*/
             let bbb = state.block
-            if (bbb.isValidBonemealTarget && bbb.isValidBonemealTarget(level, pos, state, level.isClientSide())) {
+            if (bbb.isValidBonemealTarget && bbb.isValidBonemealTarget(level, at, state, level.isClientSide())) {
                 bbb.performBonemeal(level, level.random, at, state)
                 level.levelEvent(1505, at, 0)
                 return true
