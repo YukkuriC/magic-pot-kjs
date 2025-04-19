@@ -10,14 +10,15 @@ let PotUtils = {
         let key = PotUtils.getPosKey(pos)
         return Text.translate('pot.block.' + postfix, blockName, key)
     },
-    iterChunk(pos, callback) {
+    iterChunk(pos, callback, overrdeSize) {
+        let chunkSize = overrdeSize || 16
         if (!pos.setX) pos = pos.mutable()
-        let cx = Math.floor(pos.x / 16) * 16,
-            cz = Math.floor(pos.z / 16) * 16,
+        let cx = Math.floor(pos.x / chunkSize) * chunkSize,
+            cz = Math.floor(pos.z / chunkSize) * chunkSize,
             canceller = () => (canceller = null)
-        for (let dx = 0; canceller && dx < 16; dx++) {
+        for (let dx = 0; canceller && dx < chunkSize; dx++) {
             pos.setX(cx + dx)
-            for (let dz = 0; canceller && dz < 16; dz++) {
+            for (let dz = 0; canceller && dz < chunkSize; dz++) {
                 pos.setZ(cz + dz)
                 callback(canceller, pos)
             }

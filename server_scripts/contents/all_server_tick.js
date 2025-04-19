@@ -49,6 +49,49 @@ let potTickFuncs = {
             }
         }
     },
+    potted_crimson_fungus(level, pos, data) {
+        if (level.dimension != 'minecraft:overworld' || pos < 0) throw 'stop'
+        let h = data.h
+        if (h === undefined) h = pos.y + 20
+        let ptr = pos.mutable().setY(h)
+
+        let setter =
+            h < pos.y - 1
+                ? () => {
+                      let block = level.getBlock(ptr)
+                      if (block.hasTag('forge:stone') || block.hasTag('forge:cobblestone')) return
+                      level.setBlockAndUpdate(ptr, Blocks.GRAY_CONCRETE.defaultBlockState())
+                  }
+                : h >= pos.y
+                ? () => {
+                      if (ptr.equals(pos)) return
+                      level.setBlockAndUpdate(ptr, Blocks.AIR.defaultBlockState())
+                  }
+                : () => {
+                      let { x, z } = ptr
+                      x %= 32
+                      z %= 32
+                      if (x < 0) x += 32
+                      if (z < 0) z += 32
+                      let xx = x % 8,
+                          zz = z % 8
+                      if (!x || !z || x == 31 || z == 31) {
+                          level.setBlockAndUpdate(ptr, ((x + z) % 2 ? Blocks.YELLOW_CONCRETE : Blocks.BLACK_CONCRETE).defaultBlockState())
+                      } else if (x == 15 || x == 16 || z == 15 || z == 16) {
+                          level.setBlockAndUpdate(ptr, Blocks.LIGHT_GRAY_CONCRETE.defaultBlockState())
+                      } else if ((xx == 3 || xx == 4) && (zz == 3 || zz == 4)) {
+                          level.setBlockAndUpdate(ptr, Blocks.PEARLESCENT_FROGLIGHT.defaultBlockState())
+                      } else {
+                          level.setBlockAndUpdate(ptr, Blocks.WHITE_CONCRETE.defaultBlockState())
+                      }
+                  }
+        if (level.isInWorldBounds(ptr)) PotUtils.iterChunk(ptr, setter /* , 32 */)
+        data.h = h - 1
+        if (data.h < pos.y - 30) {
+            level.tell('platform building end')
+            throw 'stop'
+        }
+    },
     potted_warped_fungus(level, pos, data) {
         let h = data.h
         if (h === undefined) h = pos.y - 1
