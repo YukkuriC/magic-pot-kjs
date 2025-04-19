@@ -6,7 +6,7 @@ ItemEvents.firstLeftClicked('flower_pot', ev => {
     } = ev
     if (!player.shiftKeyDown) return
 
-    const CHAIN_LIMIT = 64
+    const CHAIN_LIMIT = 256
     try {
         // chain miner
         if (block) {
