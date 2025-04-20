@@ -8,6 +8,14 @@ ItemEvents.firstLeftClicked('flower_pot', ev => {
 
     const CHAIN_LIMIT = 256
     try {
+        // try raycast
+        if (!block) {
+            let res = player.rayTrace(5, false)
+            if (res) {
+                block = res.block
+                facing = res.facing
+            }
+        }
         // chain miner
         if (block) {
             let isSurvival = !player.isCreative(),
@@ -56,4 +64,5 @@ ItemEvents.firstLeftClicked('flower_pot', ev => {
     } catch (e) {
         player.tell(e)
     }
+    if (block) ev.cancel()
 })
