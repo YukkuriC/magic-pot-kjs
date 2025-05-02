@@ -64,5 +64,4 @@ ItemEvents.firstLeftClicked('flower_pot', ev => {
     } catch (e) {
         player.tell(e)
     }
-    if (block) ev.cancel()
 })
