@@ -19,6 +19,7 @@ LevelEvents.tick(event => {
         try {
             let posSep = posRaw.split(',').map(Number)
             pos = BlockPos(posSep[0], posSep[1], posSep[2])
+            if (!level.isLoaded(pos)) continue
             block = level.getBlock(pos)
             let bid = cutNamespace(block.id)
             let func = potTickFuncs[bid]
