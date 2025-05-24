@@ -148,18 +148,46 @@ let potTickFuncs = {
             ptr.setY(h)
         }
         let tryChest = level.getBlock(pos.above())?.inventory
+        let oreList = level.server.persistentData.oreScanned
+        if (!oreList?.contains) return
+        oreList = Object.keys(oreList)
+        let randId = oreList[Math.floor(Math.random() * oreList.length)]
+        let drop = Item.of(randId, 16)
+        if (tryChest) {
+            tryChest.insertItem(drop, false)
+        } else {
+            let item = level.createEntity('item')
+            item.item = drop
+            item.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
+            item.setMotion(0, Math.random() * 0.3 + 0.2, 0)
+            item.spawn()
+        }
+    },
+    potted_red_mushroom(level, pos, data) {
+        let h = data.h,
+            ptr = pos.mutable()
+        if (h === undefined) {
+            level.tell(`scan started`)
+            h = pos.y - 1
+            ptr.setY(h)
+        } else if (!level.isInWorldBounds(ptr.setY(h))) {
+            level.tell(`scan finished, added ${data.n || 0} types`)
+            level.destroyBlock(pos, true)
+        }
+        /**@type {Internal.ListTag} */
+        let oreList = level.server.persistentData.oreScanned
+        if (!oreList?.contains) {
+            level.server.persistentData.oreScanned = {}
+            oreList = level.server.persistentData.oreScanned
+        }
         PotUtils.iterChunk(ptr, () => {
             let target = level.getBlock(ptr)
-            if (!target.hasTag('forge:ores') && Math.random() > 0.01) return
+            if (!target.hasTag('forge:ores')) return
             for (let drop of target.getDrops()) {
-                if (tryChest) {
-                    tryChest.insertItem(drop, false)
-                } else {
-                    let item = level.createEntity('item')
-                    item.item = drop
-                    item.setPosition(pos.x + 0.5, pos.y + 1, pos.z + 0.5)
-                    item.setMotion(0, Math.random() * 0.3 + 0.2, 0)
-                    item.spawn()
+                if (!oreList.contains(drop.id)) {
+                    oreList[drop.id] = 1
+                    data.n = (data.n || 0) + 1
+                    level.tell(Text.of(`scanned: `).append(drop.displayName.green()))
                 }
             }
         })
@@ -173,4 +201,5 @@ let potTickCooldowns = {
     potted_cherry_sapling: 100,
     potted_warped_fungus: 10,
     potted_brown_mushroom: 10,
+    potted_red_mushroom: 5,
 }
