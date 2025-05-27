@@ -204,3 +204,12 @@ let potTickCooldowns = {
     potted_brown_mushroom: 10,
     potted_red_mushroom: 5,
 }
+
+/**
+ * @param {typeof potTickFuncs} funcs
+ * @param {typeof potTickCooldowns} cds
+ */
+function appendPotTicks(funcs, cds) {
+    Object.assign(potTickFuncs, funcs)
+    Object.assign(potTickCooldowns, cds)
+}
