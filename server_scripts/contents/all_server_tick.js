@@ -179,6 +179,7 @@ let potTickFuncs = {
         if (!oreList?.contains) {
             level.server.persistentData.oreScanned = {}
             oreList = level.server.persistentData.oreScanned
+            oreList['minecraft:cobblestone'] = 1
         }
         PotUtils.iterChunk(ptr, () => {
             let target = level.getBlock(ptr)
