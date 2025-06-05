@@ -17,6 +17,23 @@
 手动怪物清场|战斗|单次|`dandelion`
 小连锁挖掘 & 锤子|农牧矿|左键使用|`flower_pot`
 
+## DLC: Botania
+
+_摸了_
+
+功能|分类|交互方式|方块类型
+--|--|--|--
+单方块机器化|农牧业|持续|`pure_daisy`
+
+## DLC: Create
+借用一下方块绑定功能搞点动画加速
+
+功能|来源|方块类型
+--|--|--
+加速|本体|`spout`
+加速|本体|`mechanical_press`
+加速|vintage improvements|`helve_hammer`
+
 ## 技术目标
 总目标：探索该路线的边界
 
