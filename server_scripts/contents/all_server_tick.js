@@ -1,3 +1,5 @@
+// priority: 1000
+
 /**@type {Record<string,(lvl:Internal.ServerLevel,pos:BlockPos,data:Internal.CompoundTag)=>void>}*/
 let potTickFuncs = {
     potted_oak_sapling(level, pos, data) {
@@ -203,13 +205,4 @@ let potTickCooldowns = {
     potted_warped_fungus: 10,
     potted_brown_mushroom: 10,
     potted_red_mushroom: 5,
-}
-
-/**
- * @param {typeof potTickFuncs} funcs
- * @param {typeof potTickCooldowns} cds
- */
-function appendPotTicks(funcs, cds) {
-    Object.assign(potTickFuncs, funcs)
-    Object.assign(potTickCooldowns, cds)
 }

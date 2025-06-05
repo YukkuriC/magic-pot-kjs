@@ -1,4 +1,3 @@
-// priority: -1
 // requires: create
 appendPotTicks(
     {
