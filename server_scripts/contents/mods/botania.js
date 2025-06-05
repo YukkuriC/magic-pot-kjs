@@ -1,4 +1,5 @@
 // priority: -1
+// requires: botania
 appendPotTicks(
     {
         potted_pure_daisy(level, pos, data) {

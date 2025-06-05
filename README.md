@@ -10,8 +10,9 @@
 动物强制繁殖|农牧业|持续|`cherry_sapling`
 区块biome类型修改|农牧业|单次|`TODO`
 自动采矿|矿业|持续|`brown_mushroom`
+自动采矿取样|矿业|持续|`red_mushroom`
 区块毁灭者 & 收集掉落物|矿业|持续|`warped_fungus`
-整地|矿业|单次？持续？|`TODO`
+整地|矿业|单次？持续？|`crimson_fungus`
 生命恢复buff|战斗|单次|`poppy`
 手动怪物清场|战斗|单次|`dandelion`
 小连锁挖掘 & 锤子|农牧矿|左键使用|`flower_pot`
