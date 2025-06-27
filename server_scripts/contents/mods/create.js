@@ -30,7 +30,52 @@
         {
             spout: 4,
             mechanical_press: 4,
-            helve_hammer: 10,
         },
     )
+
+    if (Platform.isLoaded('vintageimprovements')) {
+        appendPotTicks(
+            {
+                helve_hammer: wrapBlockEntity(be => {
+                    if (be.timer > 50) {
+                        be.timer = 50
+                        be.sendData()
+                    }
+                }),
+            },
+            {
+                helve_hammer: 10,
+            },
+        )
+    }
+
+    if (Platform.isLoaded('createdieselgenerators')) {
+        let Integer = Java.loadClass('java.lang.Integer')
+        let int3 = new Integer('3')
+        let fDistillTick = Java.class
+            .forName('com.jesz.createdieselgenerators.content.distillation.DistillationTankBlockEntity')
+            .getDeclaredField('processingTime')
+        fDistillTick.setAccessible(true)
+
+        appendPotTicks(
+            {
+                pumpjack_crank: wrapBlockEntity(be => {
+                    if (be.speed) {
+                        be.angle += 30
+                        be.sendData()
+                    }
+                }),
+                distillation_tank: wrapBlockEntity(be => {
+                    if (fDistillTick.get(be) > 3) {
+                        fDistillTick.set(be, int3)
+                        be.sendData()
+                    }
+                }),
+            },
+            {
+                pumpjack_crank: 4,
+                distillation_tank: 10,
+            },
+        )
+    }
 }
