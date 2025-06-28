@@ -20,16 +20,16 @@
                     presser.runningTicks = presser.prevRunningTicks = 240
                 }
             }),
-            helve_hammer: wrapBlockEntity(be => {
-                if (be.timer > 50) {
-                    be.timer = 50
-                    be.sendData()
+            packager: wrapBlockEntity(be => {
+                if (be.animationTicks > 1) {
+                    be.animationTicks = 1
                 }
             }),
         },
         {
             spout: 4,
             mechanical_press: 4,
+            packager: 2,
         },
     )
 
