@@ -30,5 +30,5 @@ BlockEvents.rightClicked(e => {
         }
     })
     idOld = cutNamespace(idOld)
-    if (player.crouching && (idOld in potUseFuncs || idOld in potTickFuncs)) e.cancel()
+    if (player.crouching && (idOld in potUseFuncs || idOld in potTickFuncs) && idOld.startsWith('potted')) e.cancel()
 })
